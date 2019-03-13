@@ -27,6 +27,10 @@ const STATE_KEY = {
 	CURRENT_SPARQL_ENDPOINT: 'CURRENT_SPARQL_ENDPOINT'
 }
 
+const MESSAGE_ITEM = {
+	SELECT_SPARQL_ENDPOINT: 'Select SPARQL Endpoint'
+};
+
 
 /**
  * Select the SPARQL configuration to use when executing queries.
@@ -37,7 +41,7 @@ const selectSparqlConfig = async (context) => {
 	const endpoints = _.get(vscode.workspace.getConfiguration(EXTENSION_NAME), 'endpoints', [])
 
 	if (!endpoints || !endpoints.length) {
-		vscode.window.showErrorMessage("No SPARQL endpoint are configured", "Go to preferences", "Search for 'SPARQL Eecutor'", "Edit setting via JSON");
+		vscode.window.showErrorMessage("No SPARQL endpoints configured");
 	}
 
 	const endpointNames = _.map(endpoints, 'name');
@@ -45,8 +49,10 @@ const selectSparqlConfig = async (context) => {
 		canPickMany: false
 	});
 
-	context.workspaceState.update(STATE_KEY.CURRENT_SPARQL_ENDPOINT, selectedEndpointName);
-	vscode.window.showInformationMessage(`SPARQL endpoint set to '${selectedEndpointName}'`);
+	if (selectedEndpointName) {
+		context.workspaceState.update(STATE_KEY.CURRENT_SPARQL_ENDPOINT, selectedEndpointName);
+		vscode.window.showInformationMessage(`SPARQL endpoint set to '${selectedEndpointName}'`);
+	}
 };
 
 
@@ -59,10 +65,17 @@ const getSparqlEndpoint = (context) => {
 	const endpointName = context.workspaceState.get(STATE_KEY.CURRENT_SPARQL_ENDPOINT);
 
 	if (!endpointName) {
-		vscode.window.showErrorMessage("No SPARQL endpoint set", "Command + shift + P", "Select SPARQL Endpoint");
+		vscode.window.showErrorMessage("No SPARQL endpoint set", MESSAGE_ITEM.SELECT_SPARQL_ENDPOINT)
+			.then((item) => {
+				if (item === MESSAGE_ITEM.SELECT_SPARQL_ENDPOINT) {
+					selectSparqlConfig(context);
+				}
+			});
+
+			return;
 	}
 
-	const endpoints = _.get(vscode.workspace.getConfiguration(EXTENSION_NAME), 'endpoints', [])
+	const endpoints = _.get(vscode.workspace.getConfiguration(EXTENSION_NAME), 'endpoints')
 
 	return _.find(endpoints, { name: endpointName });
 };
@@ -81,7 +94,13 @@ const getSparqlQueryType = (query) => {
  * @param {vscode.ExtensionContext} context 
  */
 const executeSparqlQuery = async (context) => {
-	const { protocol, host, authentication: { type, username, password } = {} } = getSparqlEndpoint(context);
+	const endpointConfiguration = getSparqlEndpoint(context);
+
+	if (!endpointConfiguration) {
+		return;
+	}
+
+	const { protocol, host, authentication: { type, username, password } = {} } = endpointConfiguration;
 	const url = `${protocol}://${host}/sparql`;
 	const query =  vscode.window.activeTextEditor.document.getText();
 	const queryType = getSparqlQueryType(query);
@@ -99,15 +118,19 @@ const executeSparqlQuery = async (context) => {
 	if (type === AUTH_TYPE.BASIC && username && password) {
 		options.headers.Authorization = "Basic " + Buffer.from(username + ":" + password).toString("base64");
 	}
- 
+
+	vscode.window.setStatusBarMessage("Executing SPARQL query...");
+
 	let responseJson;
 
 	try {
 		responseJson = await request(options)
 	} catch (error) {
-		vscode.window.showErrorMessage("Something went wrong when executing the SPARQL query!", error);
+		vscode.window.showErrorMessage(`Something went wrong when executing the SPARQL query: '${error}'`);
 		return;
 	}
+
+	vscode.window.setStatusBarMessage(undefined);
 
 	const response = JSON.parse(responseJson);
 	const values = [];
