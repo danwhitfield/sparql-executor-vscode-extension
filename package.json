@@ -2,10 +2,12 @@
 	"name": "sparql-executor",
 	"displayName": "SPARQL Executor",
 	"description": "Execute SPARQL queries directly from VS Code",
+	"publisher": "danwhitfield",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.32.0"
 	},
+	"icon": "images/sparql-executor-logo.png",
 	"categories": [
 		"Other"
 	],
