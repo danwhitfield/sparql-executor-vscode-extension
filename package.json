@@ -7,6 +7,10 @@
 	"engines": {
 		"vscode": "^1.32.0"
 	},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/danwhitfield/sparql-executor-vscode-extension.git"
+  },
 	"icon": "images/sparql-executor-logo.png",
 	"categories": [
 		"Other"
