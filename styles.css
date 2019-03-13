@@ -1,0 +1,21 @@
+table {
+  border: 1px solid #FFFFFF;
+  text-align: left;
+  border-collapse: collapse;
+}
+
+table td,
+table th {
+  border: 1px solid #FFFFFF;
+  padding: 5px;
+}
+
+table tbody td {
+  font-size: 13px;
+}
+
+table thead th {
+  font-size: 15px;
+  font-weight: bold;
+  color: #FFFFFF;
+}

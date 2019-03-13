@@ -1,0 +1,123 @@
+{
+	"name": "sparql-executor",
+	"displayName": "SPARQL Executor",
+	"description": "Execute SPARQL queries directly from VS Code",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.32.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:extension.select-sparql-endpoint",
+		"onCommand:extension.execute-sparql-query"
+	],
+	"main": "./extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "extension.select-sparql-endpoint",
+				"title": "Select SPARQL Endpoint"
+			},
+			{
+				"command": "extension.execute-sparql-query",
+				"title": "Execute SPARQL Query"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "extension.select-sparql-endpoint",
+				"key": "ctrl+shift+e",
+				"mac": "ctrl+shift+e",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "extension.execute-sparql-query",
+				"key": "ctrl+shift+x",
+				"mac": "ctrl+shift+x",
+				"when": "editorTextFocus"
+			}
+		],
+		"configuration": {
+			"type": "object",
+			"title": "SPARQL Executor Configuration",
+			"properties": {
+				"sparql-executor.endpoints": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"title": "SPARQL Endpoint",
+						"properties": {
+							"name": {
+								"type": "string",
+								"description": "Name of the SPARQL endpoint"
+							},
+							"host": {
+								"type": "string",
+								"description": "SPARQL endpoint host"
+							},
+							"protocol": {
+								"type": "string",
+								"description": "SPARQL endpoint protocol, either http or https",
+								"enum": [
+									"http",
+									"https"
+								]
+							},
+							"authentication": {
+								"type": "object",
+								"description": "The authentication to use with SPARQL requests (currently only supports basic auth)",
+								"properties": {
+									"type": {
+										"type": "string",
+										"description": "The type of authentication to use",
+										"enum": [
+											"basic"
+										]
+									},
+									"username": {
+										"type": "string",
+										"description": "Username for basic auth"
+									},
+									"password": {
+										"type": "string",
+										"description": "Username for basic auth"
+									}
+								},
+								"required": [
+									"type"
+								]
+							}
+						},
+						"required": [
+							"name",
+							"host",
+							"protocol"
+						]
+					}
+				}
+			}
+		}
+	},
+	"scripts": {
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "node ./node_modules/vscode/bin/test"
+	},
+	"devDependencies": {
+		"typescript": "^3.3.1",
+		"vscode": "^1.1.28",
+		"eslint": "^5.13.0",
+		"@types/node": "^10.12.21",
+		"@types/mocha": "^2.2.42"
+	},
+	"dependencies": {
+		"fs": "0.0.1-security",
+		"handlebars": "^4.1.0",
+		"lodash": "^4.17.11",
+		"request": "^2.88.0",
+		"request-promise-native": "^1.0.7",
+		"sparqljs": "^2.2.3",
+		"tableify": "^1.1.0"
+	}
+}
