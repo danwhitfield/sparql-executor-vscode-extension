@@ -7,10 +7,10 @@
 	"engines": {
 		"vscode": "^1.32.0"
 	},
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/danwhitfield/sparql-executor-vscode-extension.git"
-  },
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/danwhitfield/sparql-executor-vscode-extension.git"
+	},
 	"icon": "images/sparql-executor-logo.png",
 	"categories": [
 		"Other"
@@ -71,6 +71,14 @@
 									"https"
 								]
 							},
+							"output": {
+								"type": "string",
+								"description": "SPARQL results output format, defaults to 'json'",
+								"enum": [
+									"json",
+									"table"
+								]
+							},
 							"authentication": {
 								"type": "object",
 								"description": "The authentication to use with SPARQL requests (currently only supports basic auth)",
@@ -119,8 +127,8 @@
 	},
 	"dependencies": {
 		"fs": "0.0.1-security",
-		"handlebars": "^4.1.0",
-		"lodash": "^4.17.11",
+		"handlebars": "^4.1.2",
+		"lodash": "^4.17.15",
 		"request": "^2.88.0",
 		"request-promise-native": "^1.0.7",
 		"sparqljs": "^2.2.3",
