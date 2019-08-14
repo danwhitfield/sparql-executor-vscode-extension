@@ -49,6 +49,7 @@ This extension contributes the following settings:
 - `sparql-executor.endpoints`: configured list of SPARQL endpoints
 - `sparql-executor.endpoints.protocol`: SPARQL endpoint protocol (`https` or `http`)
 - `sparql-executor.endpoints.host`: SPARQL endpoint host, e.g. `example.com` (do not include the `/sparql` path)
+- `sparql-executor.endpoints.output`: SPARQL results output formar, e.g. `table` (defaults to `json`)
 - `sparql-executor.endpoints.authentication`: SPARQL endpoint authentication configuration
 - `sparql-executor.endpoints.authentication.type`: SPARQL endpoint authentication type (currently only supports `basic`)
 - `sparql-executor.endpoints.authentication.username`: SPARQL endpoint authentication username (for basic auth)
@@ -61,5 +62,10 @@ Initial release of SPARQL Executor which can simply:
 - Configure multiple SPARQL endpoints with:
   - Protocol
   - Host
-  - Authentication (currently *only* basic auth)
+  - Authentication (currently _only_ basic auth)
 - Execute SPARQL queries and updates
+
+### 1.1.0
+
+- Adds support for SPARQL results output in JSON
+- Fixes VS code status bar issue when SPARQL query fails
