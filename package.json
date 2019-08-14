@@ -3,7 +3,7 @@
 	"displayName": "SPARQL Executor",
 	"description": "Execute SPARQL queries directly from VS Code",
 	"publisher": "danwhitfield",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"engines": {
 		"vscode": "^1.32.0"
 	},
