@@ -69,3 +69,7 @@ Initial release of SPARQL Executor which can simply:
 
 - Adds support for SPARQL results output in JSON
 - Fixes VS code status bar issue when SPARQL query fails
+
+### 1.1.1
+
+- Fixes issue where focus is pulled away from SPARQL query in editor to output console when showing SPARQL query results in JSON output format

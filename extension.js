@@ -105,7 +105,7 @@ const renderAsTable = (results, context) => {
 const renderAsJson = results => {
   const outputChannel = vscode.window.createOutputChannel(`SPARQL Results`)
   outputChannel.append(JSON.stringify(results, null, '\t'))
-  outputChannel.show()
+  outputChannel.show(true)
 }
 
 /**
