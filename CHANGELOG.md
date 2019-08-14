@@ -28,3 +28,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Fixed
 
 - Issue where focus is pulled away from SPARQL query in editor to output console when showing SPARQL query results in JSON output format
+
+## [1.1.2] - 2019-08-14
+
+### Fixed
+
+- Update of dependencies

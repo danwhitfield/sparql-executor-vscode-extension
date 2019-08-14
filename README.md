@@ -73,3 +73,7 @@ Initial release of SPARQL Executor which can simply:
 ### 1.1.1
 
 - Fixes issue where focus is pulled away from SPARQL query in editor to output console when showing SPARQL query results in JSON output format
+
+### 1.1.2
+
+- Update of dependencies
