@@ -48,7 +48,8 @@ This extension contributes the following settings:
 
 - `sparql-executor.endpoints`: configured list of SPARQL endpoints
 - `sparql-executor.endpoints.protocol`: SPARQL endpoint protocol (`https` or `http`)
-- `sparql-executor.endpoints.host`: SPARQL endpoint host, e.g. `example.com` (do not include the `/sparql` path)
+- `sparql-executor.endpoints.host`: SPARQL endpoint host, e.g. `example.com` or `localhost:7200` (do not include the `/sparql` path)
+- `sparql-executor.endpoints.path`: SPARQL endpoint path, e.g. `/sparql`
 - `sparql-executor.endpoints.output`: SPARQL results output formar, e.g. `table` (defaults to `json`)
 - `sparql-executor.endpoints.authentication`: SPARQL endpoint authentication configuration
 - `sparql-executor.endpoints.authentication.type`: SPARQL endpoint authentication type (currently only supports `basic`)
