@@ -120,8 +120,8 @@ const executeSparqlQuery = async context => {
     return
   }
 
-  const { protocol, host, output, authentication: { type, username, password } = {} } = endpointConfiguration
-  const url = `${protocol}://${host}/sparql`
+  const { protocol, host, path, output, authentication: { type, username, password } = {} } = endpointConfiguration
+  const url = `${protocol}://${host}${path}`
   const query = vscode.window.activeTextEditor.document.getText()
   const queryType = getSparqlQueryType(query)
 

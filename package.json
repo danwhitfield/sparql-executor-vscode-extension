@@ -63,6 +63,10 @@
 								"type": "string",
 								"description": "SPARQL endpoint host"
 							},
+							"path": {
+								"type": "string",
+								"description": "Path component of SPARQL endpoint, eg '/sparql' "
+							},
 							"protocol": {
 								"type": "string",
 								"description": "SPARQL endpoint protocol, either http or https",
@@ -107,6 +111,7 @@
 						"required": [
 							"name",
 							"host",
+							"path",
 							"protocol"
 						]
 					}
