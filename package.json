@@ -128,7 +128,7 @@
 	"dependencies": {
 		"fs": "0.0.1-security",
 		"handlebars": "^4.3.0",
-		"lodash": "^4.17.15",
+		"lodash": "^4.17.19",
 		"request": "^2.88.0",
 		"request-promise-native": "^1.0.7",
 		"sparqljs": "^2.2.3",
