@@ -12,27 +12,29 @@ const path = require('path')
  * Constants.
  */
 const EXTENSION_NAME = 'sparql-executor'
+const DEFAULT_SPARQL_PATH = '/sparql'
+const SPARQL_RESULTS_MIME_TYPE = 'application/sparql-results+json'
 
 const AUTH_TYPE = {
-  BASIC: 'basic'
+  BASIC: 'basic',
 }
 
 const OUTPUT = {
   JSON: 'json',
-  TABLE: 'table'
+  TABLE: 'table',
 }
 
 const COMMAND = {
   SELECT_SPARQL_ENDPOINT: 'extension.select-sparql-endpoint',
-  EXECUTE_SPARQL_QUERY: 'extension.execute-sparql-query'
+  EXECUTE_SPARQL_QUERY: 'extension.execute-sparql-query',
 }
 
 const STATE_KEY = {
-  CURRENT_SPARQL_ENDPOINT: 'CURRENT_SPARQL_ENDPOINT'
+  CURRENT_SPARQL_ENDPOINT: 'CURRENT_SPARQL_ENDPOINT',
 }
 
 const MESSAGE_ITEM = {
-  SELECT_SPARQL_ENDPOINT: 'Select SPARQL Endpoint'
+  SELECT_SPARQL_ENDPOINT: 'Select SPARQL Endpoint',
 }
 
 /**
@@ -40,7 +42,7 @@ const MESSAGE_ITEM = {
  *
  * @param {vscode.ExtensionContext} context
  */
-const selectSparqlConfig = async context => {
+const selectSparqlConfig = async (context) => {
   const endpoints = _.get(vscode.workspace.getConfiguration(EXTENSION_NAME), 'endpoints', [])
 
   if (!endpoints || !endpoints.length) {
@@ -49,7 +51,7 @@ const selectSparqlConfig = async context => {
 
   const endpointNames = _.map(endpoints, 'name')
   const selectedEndpointName = await vscode.window.showQuickPick(endpointNames, {
-    canPickMany: false
+    canPickMany: false,
   })
 
   if (selectedEndpointName) {
@@ -63,11 +65,11 @@ const selectSparqlConfig = async context => {
  *
  * @param {vscode.ExtensionContext} context
  */
-const getSparqlEndpoint = context => {
+const getSparqlEndpoint = (context) => {
   const endpointName = context.workspaceState.get(STATE_KEY.CURRENT_SPARQL_ENDPOINT)
 
   if (!endpointName) {
-    vscode.window.showErrorMessage('No SPARQL endpoint set', MESSAGE_ITEM.SELECT_SPARQL_ENDPOINT).then(item => {
+    vscode.window.showErrorMessage('No SPARQL endpoint set', MESSAGE_ITEM.SELECT_SPARQL_ENDPOINT).then((item) => {
       if (item === MESSAGE_ITEM.SELECT_SPARQL_ENDPOINT) {
         selectSparqlConfig(context)
       }
@@ -81,7 +83,7 @@ const getSparqlEndpoint = context => {
   return _.find(endpoints, { name: endpointName })
 }
 
-const getSparqlQueryType = query => {
+const getSparqlQueryType = (query) => {
   const parsedQuery = parser.parse(query)
 
   return parsedQuery.type
@@ -89,7 +91,7 @@ const getSparqlQueryType = query => {
 
 const renderAsTable = (results, context) => {
   const panel = vscode.window.createWebviewPanel('sparqlResultsTable', 'SPARQL Query Results', vscode.ViewColumn.One, {
-    localResourceRoots: [vscode.Uri.file(context.extensionPath)]
+    localResourceRoots: [vscode.Uri.file(context.extensionPath)],
   })
   const htmlTable = tableify(results)
   const htmlFilePath = vscode.Uri.file(path.join(context.extensionPath, 'results.handlebars'))
@@ -102,10 +104,37 @@ const renderAsTable = (results, context) => {
   panel.reveal()
 }
 
-const renderAsJson = results => {
+const renderAsJson = (results) => {
   const outputChannel = vscode.window.createOutputChannel(`SPARQL Results`)
   outputChannel.append(JSON.stringify(results, null, '\t'))
   outputChannel.show(true)
+}
+
+const getRequestPostOptions = (url, queryParameterName) => {
+  const query = vscode.window.activeTextEditor.document.getText()
+
+  return {
+    method: 'POST',
+    url,
+    headers: {
+      Accept: SPARQL_RESULTS_MIME_TYPE,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    form: { [queryParameterName]: query },
+  }
+}
+
+const getRequestGetOptions = (url, queryParameterName) => {
+  const query = encodeURIComponent(vscode.window.activeTextEditor.document.getText())
+  const fullRequestUrl = _.includes(url, '?') ? `${url}&${queryParameterName}=${query}` : `${url}?${queryParameterName}=${query}`
+
+  return {
+    method: 'GET',
+    url: fullRequestUrl,
+    headers: {
+      Accept: SPARQL_RESULTS_MIME_TYPE,
+    },
+  }
 }
 
 /**
@@ -113,28 +142,39 @@ const renderAsJson = results => {
  *
  * @param {vscode.ExtensionContext} context
  */
-const executeSparqlQuery = async context => {
+const executeSparqlQuery = async (context) => {
   const endpointConfiguration = getSparqlEndpoint(context)
 
   if (!endpointConfiguration) {
     return
   }
 
-  const { protocol, host, output, authentication: { type, username, password } = {} } = endpointConfiguration
-  const url = `${protocol}://${host}/sparql`
+  const {
+    protocol,
+    host,
+    path,
+    method,
+    queryParameterName,
+    customHeaders,
+    output,
+    authentication: { type, username, password } = {},
+  } = endpointConfiguration
   const query = vscode.window.activeTextEditor.document.getText()
   const queryType = getSparqlQueryType(query)
+  const url = `${protocol}://${host}/${(path || DEFAULT_SPARQL_PATH).replace(/^\//, '')}`
+  const options =
+    method === 'GET'
+      ? getRequestGetOptions(url, queryParameterName || queryType)
+      : getRequestPostOptions(url, queryParameterName || queryType)
 
-  const options = {
-    method: 'POST',
-    url: url,
-    headers: {
-      Accept: 'application/sparql-results+json',
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    form: { [queryType]: query }
+  // Add custom headers.
+  if (_.isArray(customHeaders)) {
+    customHeaders.forEach((customHeader) => {
+      options.headers[customHeader.headerName] = customHeader.headerValue
+    })
   }
 
+  // Add authentication headers.
   if (type === AUTH_TYPE.BASIC && username && password) {
     options.headers.Authorization = 'Basic ' + Buffer.from(username + ':' + password).toString('base64')
   }
@@ -160,7 +200,7 @@ const executeSparqlQuery = async context => {
     return
   }
 
-  _.each(response.results.bindings, binding => {
+  _.each(response.results.bindings, (binding) => {
     const newBinding = {}
 
     _.each(binding, (value, key) => {
@@ -180,7 +220,7 @@ const executeSparqlQuery = async context => {
 /**
  * @param {vscode.ExtensionContext} context
  */
-const activate = context => {
+const activate = (context) => {
   context.subscriptions.push(vscode.commands.registerCommand(COMMAND.SELECT_SPARQL_ENDPOINT, () => selectSparqlConfig(context)))
   context.subscriptions.push(vscode.commands.registerCommand(COMMAND.EXECUTE_SPARQL_QUERY, () => executeSparqlQuery(context)))
 }
@@ -191,5 +231,5 @@ const deactivate = () => {}
 
 module.exports = {
   activate,
-  deactivate
+  deactivate,
 }

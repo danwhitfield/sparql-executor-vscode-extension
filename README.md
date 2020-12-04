@@ -48,8 +48,14 @@ This extension contributes the following settings:
 
 - `sparql-executor.endpoints`: configured list of SPARQL endpoints
 - `sparql-executor.endpoints.protocol`: SPARQL endpoint protocol (`https` or `http`)
-- `sparql-executor.endpoints.host`: SPARQL endpoint host, e.g. `example.com` (do not include the `/sparql` path)
+- `sparql-executor.endpoints.host`: SPARQL endpoint host, e.g. `example.com` (do not include a path)
+- `sparql-executor.endpoints.path`: SPARQL endpoint path, e.g. `/sparql`
+- `sparql-executor.endpoints.method`: SPARQL endpoint HTTP method, e.g. `GET` (defaults to `POST`)
+- `sparql-executor.endpoints.queryParameterName`: Custom SPARQL query post data/query string parameter name, e.g. `query`
 - `sparql-executor.endpoints.output`: SPARQL results output formar, e.g. `table` (defaults to `json`)
+- `sparql-executor.endpoints.customHeaders`: Define custom headers to be included in the SPARQL request
+- `sparql-executor.endpoints.customHeaders.[].headerName`: Name of the custom header
+- `sparql-executor.endpoints.customHeaders.[].headerValue`: Value of the custom header
 - `sparql-executor.endpoints.authentication`: SPARQL endpoint authentication configuration
 - `sparql-executor.endpoints.authentication.type`: SPARQL endpoint authentication type (currently only supports `basic`)
 - `sparql-executor.endpoints.authentication.username`: SPARQL endpoint authentication username (for basic auth)

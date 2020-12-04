@@ -63,6 +63,24 @@
 								"type": "string",
 								"description": "SPARQL endpoint host"
 							},
+							"path": {
+								"type": "string",
+								"description": "Path component of SPARQL endpoint, eg '/sparql'",
+								"default": "/sparql"
+							},
+							"method": {
+								"type": "string",
+								"description": "HTTP query method for the SPARQL query, eg 'GET'",
+								"enum": [
+									"GET",
+									"POST"
+								],
+								"default": "POST"
+							},
+							"queryParameterName": {
+								"type": "string",
+								"description": "Set a custom post data/query string SPARQL query paramter name"
+							},
 							"protocol": {
 								"type": "string",
 								"description": "SPARQL endpoint protocol, either http or https",
@@ -78,6 +96,22 @@
 									"json",
 									"table"
 								]
+							},
+							"customHeaders": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"headerName": {
+											"type": "string",
+											"description": "Custom header name"
+										},
+										"headerValue": {
+											"type": "string",
+											"description": "Custom header value"
+										}
+									}
+								}
 							},
 							"authentication": {
 								"type": "object",
@@ -122,12 +156,11 @@
 		"typescript": "^3.3.1",
 		"vscode": "^1.1.28",
 		"eslint": "^5.13.0",
-		"@types/node": "^10.12.21",
-		"@types/mocha": "^2.2.42"
+		"@types/node": "^10.12.21"
 	},
 	"dependencies": {
 		"fs": "0.0.1-security",
-		"handlebars": "^4.3.0",
+		"handlebars": "^4.7.6",
 		"lodash": "^4.17.19",
 		"request": "^2.88.0",
 		"request-promise-native": "^1.0.7",
