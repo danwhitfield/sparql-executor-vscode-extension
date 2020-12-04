@@ -83,3 +83,16 @@ Initial release of SPARQL Executor which can simply:
 ### 1.1.2
 
 - Update of dependencies
+
+### 1.2.0
+
+- Update of dependencies
+- Added the ability to configure
+  - SPARQL URL path
+  - Request method (POST or GET)
+  - SPARQL query parameter name in the request post data/query string
+  - Custom request headers
+
+### 1.2.1
+
+- Update to changelog

@@ -34,3 +34,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Fixed
 
 - Update of dependencies
+
+## [1.2.0] - 2020-12-04
+
+### Added
+
+- Update of dependencies
+- Added the ability to configure: SPARQL URL path, request method (POST or GET), SPARQL query parameter name in the request post data/query string and custom request headers
+  dependencies
+
+## [1.2.1] - 2020-12-04
+
+### Fixed
+
+- Update to changelog
