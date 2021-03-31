@@ -10,8 +10,28 @@ Open `settings.json` in Visual Studio Code and add SPARQL endpoints:
 
 ![Configure Multiple SPARQL Endpoints](images/configure-multiple-sparql-endpoints.png)
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
+For example: the following configuration defines a Wikidata and a Dbpedia endpoint:
+ 
+ ```
+ "sparql-executor.endpoints": [
+        {
+          "host": "query.wikidata.org",
+          "protocol": "https",
+          "name": "wikidata",
+          "customHeaders": [
+            {
+              "headerName": "User-Agent",
+              "headerValue": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0"
+            },
+          ]
+        },
+        {
+          "host": "dbpedia.org",
+          "protocol": "https",
+          "name": "dbpedia",
+        }
+]
+```
 ### Select From SPARQL Endpoints
 
 #### Select SPARQL Endpoint Using Command Palette
