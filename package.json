@@ -160,7 +160,7 @@
 	},
 	"dependencies": {
 		"fs": "0.0.1-security",
-		"handlebars": "^4.7.6",
+		"handlebars": "^4.7.7",
 		"lodash": "^4.17.19",
 		"request": "^2.88.0",
 		"request-promise-native": "^1.0.7",
