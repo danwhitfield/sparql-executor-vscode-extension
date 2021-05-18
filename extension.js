@@ -84,7 +84,14 @@ const getSparqlEndpoint = (context) => {
 }
 
 const getSparqlQueryType = (query) => {
-  const parsedQuery = parser.parse(query)
+  let parsedQuery
+
+  try {
+    parsedQuery = parser.parse(query)
+  } catch (err) {
+    vscode.window.showErrorMessage(`SPARQL Error: '${err.message}'`)
+    return null
+  }
 
   return parsedQuery.type
 }
@@ -161,6 +168,12 @@ const executeSparqlQuery = async (context) => {
   } = endpointConfiguration
   const query = vscode.window.activeTextEditor.document.getText()
   const queryType = getSparqlQueryType(query)
+
+  // If we were unable to parse the SPARQL query to get the query type, then stop.
+  if (!queryType) {
+    return
+  }
+
   const url = `${protocol}://${host}/${(path || DEFAULT_SPARQL_PATH).replace(/^\//, '')}`
   const options =
     method === 'GET'

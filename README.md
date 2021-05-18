@@ -11,27 +11,32 @@ Open `settings.json` in Visual Studio Code and add SPARQL endpoints:
 ![Configure Multiple SPARQL Endpoints](images/configure-multiple-sparql-endpoints.png)
 
 For example: the following configuration defines a Wikidata and a Dbpedia endpoint:
- 
- ```
- "sparql-executor.endpoints": [
-        {
-          "host": "query.wikidata.org",
-          "protocol": "https",
-          "name": "wikidata",
-          "customHeaders": [
-            {
-              "headerName": "User-Agent",
-              "headerValue": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0"
-            },
-          ]
-        },
-        {
-          "host": "dbpedia.org",
-          "protocol": "https",
-          "name": "dbpedia",
-        }
+
+```
+"sparql-executor.endpoints": [
+       {
+         "protocol": "https",
+         "host": "query.wikidata.org",
+         "path": "/sparql",
+         "name": "Wikidata",
+         "customHeaders": [
+           {
+             "headerName": "User-Agent",
+             "headerValue": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0"
+           },
+         ],
+         "method": "GET",
+         "queryParameterName": "query"
+       },
+       {
+         "protocol": "https",
+         "host": "dbpedia.org",
+         "name": "DBpedia",
+         "path": "/sparql"
+       }
 ]
 ```
+
 ### Select From SPARQL Endpoints
 
 #### Select SPARQL Endpoint Using Command Palette
@@ -116,3 +121,9 @@ Initial release of SPARQL Executor which can simply:
 ### 1.2.1
 
 - Update to changelog
+
+### 1.2.2
+
+- Update of dependencies
+- Now showing error popup in UI for SPARQL parse errors
+- Updated example SPARQL endpoint configuration in README
