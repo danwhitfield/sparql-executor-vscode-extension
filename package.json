@@ -161,7 +161,7 @@
 	"dependencies": {
 		"fs": "0.0.1-security",
 		"handlebars": "^4.7.7",
-		"lodash": "^4.17.19",
+		"lodash": "^4.17.21",
 		"request": "^2.88.0",
 		"request-promise-native": "^1.0.7",
 		"sparqljs": "^2.2.3",
