@@ -48,3 +48,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Fixed
 
 - Update to changelog
+
+## [1.2.2] - 2020-12-04
+
+- Update to changelog
+- Update of dependencies
+- Now showing error popup in UI for SPARQL parse errors
+
+### Fixed
+
+- Updated example SPARQL endpoint configuration in README

@@ -3,7 +3,7 @@
 	"displayName": "SPARQL Executor",
 	"description": "Execute SPARQL queries directly from VS Code",
 	"publisher": "danwhitfield",
-	"version": "1.2.2",
+	"version": "1.2.1",
 	"engines": {
 		"vscode": "^1.32.0"
 	},
@@ -153,10 +153,10 @@
 		"test": "node ./node_modules/vscode/bin/test"
 	},
 	"devDependencies": {
-		"typescript": "^3.3.1",
-		"vscode": "^1.1.28",
+		"@types/node": "^10.12.21",
 		"eslint": "^5.13.0",
-		"@types/node": "^10.12.21"
+		"typescript": "^3.3.1",
+		"vscode": "^1.1.37"
 	},
 	"dependencies": {
 		"fs": "0.0.1-security",
