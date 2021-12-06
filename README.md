@@ -1,3 +1,5 @@
+# THIS PROJECT IS NO LONGER ACTIVELY MAINTAINED 
+
 # SPARQL Executor README
 
 The SPARQL Executor Visual Studio Code extension is a simple utility which allows you to configure SPARQL end-points and execute SPARQL queries.
